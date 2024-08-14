@@ -1,0 +1,24 @@
+{
+  "name": "thread-app-clone-graphQL",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Sagarsharma11/thread-app-clone-graphQL.git",
+  "author": "sagar <sagar@mycareershapers.in>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsc-watch --onSuccess \"npm start\""
+  },
+  "dependencies": {
+    "@apollo/server": "^4.11.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "graphql": "^16.9.0",
+    "graphql-tag": "^2.12.6",
+    "typescript": "^5.5.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "tsc-watch": "^6.2.0"
+  }
+}
