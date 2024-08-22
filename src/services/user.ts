@@ -14,10 +14,17 @@ export interface GetUserTokenPayload {
 }
 
 class UserService {
+
+    private static generateHash(salt:string, password:string){
+
+        return createHmac('sha256', salt).update(password).digest('hex');
+
+    }
+
     public static createUser(payload: CreateUserPayload) {
         const { firstName, lastName, email, password } = payload;
         const salt = randomBytes(32).toString("hex");
-        const hashedPassword = createHmac('sha256', salt).update(password).digest('hex')
+        const hashedPassword = UserService.generateHash(salt, password)
         return prismaClient.user.create({
             data: {
                 firstName,
@@ -33,10 +40,16 @@ class UserService {
         return prismaClient.user.findUnique({where:{email}});
     }
 
-    public static getUserToken(payload: GetUserTokenPayload){
+    public static async getUserToken(payload: GetUserTokenPayload){
         const {email, password} = payload;
-        const user = UserService.getUserEmail(email);
+        const user = await UserService.getUserEmail(email);
+        if(!user) throw new Error('user not found');
 
+        const userSalt = user.salt;
+        const usersHashPassword = UserService.generateHash(userSalt, password);
+
+        if(usersHashPassword !== user.password) throw new Error("Incorrect Password");
+        // Gen Token
     }
 
 }
