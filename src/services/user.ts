@@ -1,5 +1,6 @@
-import { createHmac, randomBytes } from "node:crypto"
-import { prismaClient } from "../lib/db"
+import { createHmac, randomBytes } from "node:crypto";
+import { prismaClient } from "../lib/db";
+import JWT from "jsonwebtoken";
 
 export interface CreateUserPayload {
     firstName: string
@@ -50,6 +51,9 @@ class UserService {
 
         if(usersHashPassword !== user.password) throw new Error("Incorrect Password");
         // Gen Token
+        const secret_key = "helloworld";
+        const token = JWT.sign({id: user.id, email:user.email}, secret_key);
+        return token;
     }
 
 }
